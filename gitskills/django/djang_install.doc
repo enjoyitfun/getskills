@@ -1,0 +1,11 @@
+#python
+tar -zxf Python-2.7.7.tgz && cd Python-2.7.7
+./configure --prefix=/usr/local/python2.7  --enable-shared CFLAGS=-fPIC
+make && make install
+
+#mod_python-3.3.1
+tar -zxf mod_python-3.3.1.tgz && cd mod_python-3.3.1
+./configure --with-apxs=/usr/local/apache2/bin/apxs -with-python=/usr/local/python2.7/bin/python
+make && make install
+#成功后在apache的modules目录下会出现mod_python.so,在apache配置文件添加
+# LoadModule python_module /usr/local/apache2/modules/mod_python.so
