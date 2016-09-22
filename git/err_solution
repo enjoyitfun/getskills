@@ -1,0 +1,9 @@
+1:err_information
+  Merge the remote changes (e.g. 'git pull') before pushing again.  See the
+'Note about fast-forwards' section of 'git push --help' for details.
+
+1.1:solution
+  git config branch.master.remote origin 
+  git config branch.master.merge refs/heads/master 
+
+
