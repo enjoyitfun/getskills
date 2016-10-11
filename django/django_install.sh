@@ -37,7 +37,7 @@ make && make install
 
 chmod 755 /usr/local/apache2/modules/mod_wsgi.so
 
-sed -i '/Listen 80/i\Listen 8'  /usr/local/apache2/conf/httpd.conf
+sed -i '/Listen 80/i\Listen 800'  /usr/local/apache2/conf/httpd.conf
 
 cat >> /usr/local/apache2/conf/httpd.conf <<EOF
 <VirtualHost *:800>
