@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <form action="/http_code/query" method="post">
+        <div style="width:970px; margin:10px left;">
+            <input placeholder="请输入日期" name="time" class="laydate-icon" onclick="laydate()">
+            <input name="" type="submit" value="查询" class="searchbtn">
+        </div>
+    </form>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablecss auto">
+        <tr>
+            <th width="50%">http_stat</th>
+            <th width="50%">count</th>
+        </tr>
+
+        {% for i in info %}
+        {% for each in i['info'] %}
+        <tr>
+            <td>{{each['http_stat']}}</td>
+            </br>
+            <td>{{each['count']}}</td>
+            </br>
+            {% endfor %}
+            {% endfor %}
+    </table>
+</div>
+<body>
+{% endblock %}
+</html>
