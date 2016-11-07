@@ -1,0 +1,53 @@
+input {
+    file {
+    type => "nginx_access"
+    path => ["/usr/local/tengine/logs/test01.log"]
+    codec => json {
+    charset => "UTF-8"
+}
+    }
+  }
+
+
+filter {
+     if "remote_addr" not in ["120.27.147.86"] {
+     geoip {
+        source => "remote_addr"
+        fields => ["city_name", "country_code2", "country_name", "latitude", "longitude", "region_name"]
+        remove_field => ["[geoip][latitude]", "[geoip][longitude]"]
+       }
+     }
+     mutate {
+        gsub => ["upstream_response_time","[-]",0]
+        convert => ["request_time", "float"]
+        convert => ["upstream_response_time","float"]
+        }
+    ruby {
+        init => "@kname = ['method','uri','verb']"
+        code => "event.append(Hash[@kname.zip(event.get('request_url').split(' '))])"
+    }
+    if [uri] {
+        ruby {
+            init => "@kname = ['url_path','url_args']"
+            code => "event.append(Hash[@kname.zip(event['uri'].split('/'))])"
+        }
+        kv {
+            prefix => "url_"
+            source => "url_args"
+            field_split => "/"
+            include_keys => [ "uid", "cip" ]
+            remove_field => [ "url_args", "uri" ]
+        }
+    }
+}
+
+output {
+        redis {
+                host => "127.0.0.1"
+                port => "6479"
+                data_type => "list"
+                key => "logstash:redis"
+                password => "Hjh%$&dds$%125fR"
+                db => 0
+        }
+}
